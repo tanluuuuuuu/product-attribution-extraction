@@ -1,7 +1,8 @@
 # Installation
 Python: 3.8.10
-```python
-  pip install transformers
+```bash
+  conda create -n ner_env python=3.8.10 
+  conda activate ner_env
 ```
 
 # Download model
