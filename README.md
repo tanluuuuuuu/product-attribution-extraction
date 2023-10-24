@@ -10,7 +10,7 @@ https://drive.google.com/drive/folders/1DG2cgeLSggWGFzxxSFjVhcuGB5-r4gO5?usp=sha
 ```
 
 # Train
-See file [train](./notebooks/inference.ipynb)
+See file [train](./notebooks/train.ipynb)
 
 # Inference
 Take a look at file [inference](./notebooks/inference.ipynb)
