@@ -6,11 +6,17 @@ CUDA version: 11.8
   conda activate ner_env
   pip install transformers
   pip install torch torchvision --index-url https://download.pytorch.org/whl/cu118
+  pip install jupyterlab
 ```
 
 # Download model
 ```
 https://drive.google.com/drive/folders/1DG2cgeLSggWGFzxxSFjVhcuGB5-r4gO5?usp=sharing
+```
+# Start notebooks
+```bash
+  conda activate ner_env
+  jupyter lab
 ```
 
 # Train
