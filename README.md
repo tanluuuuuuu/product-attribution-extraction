@@ -4,14 +4,13 @@ CUDA version: 11.8
 ```bash
   conda create -n ner_env python=3.8.10 
   conda activate ner_env
-  pip install transformers
-  pip install torch torchvision --index-url https://download.pytorch.org/whl/cu118
-  pip install jupyterlab
+  pip install -r requirement.txt
 ```
 
 # Download model
 ```
-https://drive.google.com/drive/folders/1DG2cgeLSggWGFzxxSFjVhcuGB5-r4gO5?usp=sharing
+V1: https://drive.google.com/drive/folders/1DG2cgeLSggWGFzxxSFjVhcuGB5-r4gO5?usp=sharing
+V2: https://drive.google.com/drive/folders/1eoTzxwGRt-BX4Xc62XoeP_p6cJU4U_Jz?usp=sharing
 ```
 # Start notebooks
 ```bash
