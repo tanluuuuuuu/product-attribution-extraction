@@ -1,17 +1,21 @@
 from transformers import pipeline
 from collections import defaultdict
 import json
+import argparse
 
 if __name__=='__main__':
-    model_checkpoint = ""
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-m', "--model", help="Link model", type=str, required=True)
+    parser.add_argument('-t', "--text", help="Text to extract material and color", type=str, required=True)
+    args = parser.parse_args()
+    
+    model_checkpoint = args.model
     token_classifier = pipeline(
         "ner", model=model_checkpoint, aggregation_strategy="simple", device=0
     )
 
     # Replace this description
-    description = '''
-    Made from pinus sylvestris and new PE mat - Unique design , Easy to use & flexible set - up , No tools required for installation , durable thick gauge plastic to connect with another piece , Easy DIY installation even over slighly uneven surfaces .
-    '''
+    description = args.text
 
     def preprocess_description(description, words_need_removed = []):
         # add space to string
