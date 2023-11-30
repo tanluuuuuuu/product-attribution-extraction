@@ -40,5 +40,5 @@ Or take a look at file [inference](./notebooks/inference.ipynb) for more informa
 For better result, please remove brand name from text due to  potential contextual similarities.
 
 # Future works
-- Update more material vocabularies, contexts in training data
-
+- Update more material and color vocabularies, contexts in training data
+- Add more attributes for extraction.
