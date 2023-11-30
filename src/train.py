@@ -1,8 +1,6 @@
 from transformers import AutoTokenizer
 from torch.utils.data import DataLoader
 from transformers import DataCollatorForTokenClassification
-from typing import Dict
-from transformers import RobertaForTokenClassification
 import evaluate
 from torch.optim import AdamW
 from transformers import get_scheduler
@@ -68,7 +66,7 @@ if __name__ == '__main__':
             optimizer.step()
             lr_scheduler.step()
             optimizer.zero_grad()
-        
+
         # Evaluate
         results = evaluate_model(
             model,
@@ -92,7 +90,3 @@ if __name__ == '__main__':
             save_model(
                 output_dir, f'epoch_{epoch + 1}', tokenizer, unwrapped_model, accelerator.save)
             print(f"Save model at epoch {epoch + 1}")
-            
-            
-            
-            
