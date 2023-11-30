@@ -42,3 +42,4 @@ For better result, please remove brand name from text due to  potential contextu
 # Future works
 - Update more material and color vocabularies, contexts in training data
 - Add more attributes for extraction.
+- Create dictionary mapping materials.
