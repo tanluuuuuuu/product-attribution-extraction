@@ -5,6 +5,7 @@ from typing import Dict, List
 import ast
 from datasets import Dataset, DatasetDict, ClassLabel, Features, Value, Sequence
 from transformers.models.roberta.tokenization_roberta_fast import RobertaTokenizerFast
+import re
 
 def load_data(
     excel_path: str,
@@ -137,3 +138,25 @@ def postprocess(predictions, labels, processed_ner_tags):
         for prediction, label in zip(predictions, labels)
     ]
     return true_labels, true_predictions
+
+def preprocess_description(description, words_need_removed = []):
+    # add space to string
+    single_description = description.strip()
+    pattern = "[^a-zA-Z0-9\s]"
+    matches = re.finditer(pattern, text)
+    
+    new_description = []
+    before = 0
+    for match in matches:
+        new_description.append(description[before:match.start()].strip())
+        new_description.append(description[match.start():match.end()])
+        before = match.end()
+    new_description.append(description[before:].strip())
+    new_description = " ".join(new_description).strip()
+    
+    # TODO: Remove words from string: brand name,...
+    querywords = new_description.split(" ")
+    words_need_removed = [x.lower() for x in words_need_removed]
+    resultwords  = [word for word in querywords if word.lower() not in words_need_removed]
+    result = ' '.join(resultwords)
+    return result
