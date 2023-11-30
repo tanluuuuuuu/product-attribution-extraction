@@ -10,8 +10,7 @@ CUDA version: 11.8
 
 # Download model
 ```
-V1: https://drive.google.com/drive/folders/1DG2cgeLSggWGFzxxSFjVhcuGB5-r4gO5?usp=sharing
-V2: https://drive.google.com/drive/folders/1eoTzxwGRt-BX4Xc62XoeP_p6cJU4U_Jz?usp=sharing
+V5: https://drive.google.com/drive/folders/1IIVdpPzj2FjWY0800-ZaqP7vpPA8akLG?usp=drive_link
 ```
 # Start notebooks
 ```bash
@@ -20,8 +19,26 @@ V2: https://drive.google.com/drive/folders/1eoTzxwGRt-BX4Xc62XoeP_p6cJU4U_Jz?usp
 ```
 
 # Train
+```bash
+  python src/train.py
+```
 See file [train](./notebooks/train.ipynb)
 
 # Inference
-Take a look at file [inference](./notebooks/inference.ipynb)
+```bash
+  python src/inference.py -m [Link model] -t [Text]
+```
+Or take a look at file [inference](./notebooks/inference.ipynb)
+
+# Performance
+| class     | precision| recall   |f1     |
+| :-------- | :------- | :------- |:------|
+| MAT       | 0.968    | 0.945    | 0.956 |
+| COLOR     | 0.980    | 0.889    | 0.932 |
+
+# Note
+For better result, please remove brand name from text due to  potential contextual similarities.
+
+# Future works
+- Update more material vocabularies, contexts in training data
 
