@@ -143,7 +143,7 @@ def preprocess_description(description, words_need_removed = []):
     # add space to string
     single_description = description.strip()
     pattern = "[^a-zA-Z0-9\s]"
-    matches = re.finditer(pattern, text)
+    matches = re.finditer(pattern, single_description)
     
     new_description = []
     before = 0
