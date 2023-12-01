@@ -11,7 +11,16 @@ CUDA version: 11.8
 # Download model
 ```
 V6: https://drive.google.com/drive/folders/1Q9r6WcuLYFgYVPkua-WDcGgahXkXjvb3?usp=drive_link
-HuggingFace: https://huggingface.co/tanluuuuuuu/material_colors_recognition_v3
+```
+or load model using HuggingFace
+```python
+from transformers import pipeline
+from collections import defaultdict
+
+model_checkpoint = "tanluuuuuuu/material_colors_recognition_v3"
+token_classifier = pipeline(
+    "ner", model=model_checkpoint, aggregation_strategy="simple"
+)
 ```
 # Start notebooks
 ```bash
