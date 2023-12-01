@@ -11,6 +11,7 @@ CUDA version: 11.8
 # Download model
 ```
 V6: https://drive.google.com/drive/folders/1Q9r6WcuLYFgYVPkua-WDcGgahXkXjvb3?usp=drive_link
+HuggingFace: https://huggingface.co/tanluuuuuuu/material_colors_recognition_v3
 ```
 # Start notebooks
 ```bash
