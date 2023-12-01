@@ -10,7 +10,7 @@ CUDA version: 11.8
 
 # Download model
 ```
-V5: https://drive.google.com/drive/folders/1IIVdpPzj2FjWY0800-ZaqP7vpPA8akLG?usp=drive_link
+V6: https://drive.google.com/drive/folders/1Q9r6WcuLYFgYVPkua-WDcGgahXkXjvb3?usp=drive_link
 ```
 # Start notebooks
 ```bash
