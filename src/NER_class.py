@@ -6,6 +6,7 @@ from data_utils import preprocess_description
 import pandas as pd
 import torch
 import re
+from nltk.stem import PorterStemmer
 from collections import defaultdict
 
 class NER():
@@ -19,6 +20,7 @@ class NER():
             "ner", model=model_checkpoint, aggregation_strategy="simple", device=0
         )
         self.mat_mapping = self.load_mat_mapping(mat_mapping)
+        self.ps = PorterStemmer()
 
     def predict(self, description):
         high_score_ans = defaultdict(set)
@@ -33,7 +35,8 @@ class NER():
                     if res['score'] >= 0.9:
                         word = res['word'].strip().lower()
                         mapped_word = self.map_word(word)
-                        high_score_ans[group].add(mapped_word)
+                        word_stemmed = self.stemming_word(mapped_word)
+                        high_score_ans[group].add(word_stemmed)
                         
         new_high_score_ans = defaultdict(list)
         for key_dict in high_score_ans.keys():
@@ -77,3 +80,7 @@ class NER():
             res.append(mapped)
         res = " ".join(res)
         return res
+    
+    def stemming_word(self, word):
+        new_words = [self.ps.stem(w) for w in word.split(" ")]
+        return " ".join(new_words)
