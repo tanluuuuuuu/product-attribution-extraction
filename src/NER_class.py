@@ -8,6 +8,7 @@ import torch
 import re
 from nltk.stem import PorterStemmer
 from collections import defaultdict
+import spacy
 
 class NER():
     def __init__(
@@ -21,6 +22,7 @@ class NER():
         )
         self.mat_mapping = self.load_mat_mapping(mat_mapping)
         self.ps = PorterStemmer()
+        self.nlp = spacy.load('en_core_web_sm')
 
     def predict(self, description):
         high_score_ans = defaultdict(set)
@@ -35,8 +37,9 @@ class NER():
                     if res['score'] >= 0.9:
                         word = res['word'].strip().lower()
                         mapped_word = self.map_word(word)
-                        word_stemmed = self.stemming_word(mapped_word)
-                        high_score_ans[group].add(word_stemmed)
+                        lemmatized_word = self.lemmatize_word(mapped_word)
+                        # word_stemmed = self.stemming_word(mapped_word)
+                        high_score_ans[group].add(lemmatized_word)
                         
         new_high_score_ans = defaultdict(list)
         for key_dict in high_score_ans.keys():
@@ -84,3 +87,10 @@ class NER():
     def stemming_word(self, word):
         new_words = [self.ps.stem(w) for w in word.split(" ")]
         return " ".join(new_words)
+    
+    def lemmatize_word(self, word):
+        doc = self.nlp(word)
+        new_word = []
+        for token in doc:
+            new_word.append(token.lemma_)
+        return " ".join(new_word)
