@@ -11,6 +11,7 @@ CUDA version: 11.8
 # Download model
 ```
 V6: https://drive.google.com/drive/folders/1Q9r6WcuLYFgYVPkua-WDcGgahXkXjvb3?usp=drive_link
+V7: https://drive.google.com/drive/folders/1DtmoeOi22NlWPKTjZQ1BTm1MTGH0Dbiv?usp=drive_link
 ```
 or load model using HuggingFace
 ```python
@@ -48,6 +49,8 @@ Or take a look at file [inference](./notebooks/inference.ipynb) for more informa
 
 # Note
 For better result, please remove brand name from text due to  potential contextual similarities.
+V6: Fix fiberboard, chipboard,... cases
+V7: Fix color mat (silver powder) cases
 
 # Future works
 - Update more material and color vocabularies, contexts in training data
