@@ -48,9 +48,9 @@ Or take a look at file [inference](./notebooks/inference.ipynb) for more informa
 | COLOR     | 0.980    | 0.889    | 0.932 |
 
 # Note
-For better result, please remove brand name from text due to  potential contextual similarities.
-V6: Fix fiberboard, chipboard,... cases
-V7: Fix color mat (silver powder) cases
+- For better result, please remove brand name from text due to  potential contextual similarities.
+- V6: Fix fiberboard, chipboard,... cases
+- V7: Fix color mat (silver powder) cases
 
 # Future works
 - Update more material and color vocabularies, contexts in training data
