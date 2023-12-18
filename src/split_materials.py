@@ -10,6 +10,7 @@ import ast
 import os
 import pickle
 import shutil
+from collections import Counter
 
 MODEL_CHECKPOINT = "Model checkpoint path here" # Path to model checkpoint downloaded from Drive. Ex:  model/best_f1
 MAT_MAPPING = "Material mapping path here" # Path to excel file contains material mapping dictionary. Ex: data/mat_mapping.xlsx
@@ -24,6 +25,6 @@ if __name__ == '__main__':
         candidate_descriptions=dict,
         map_level=MAP_LEVEL
     )
-    
+
     
     
