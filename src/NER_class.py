@@ -263,7 +263,7 @@ class NER():
         print("Get focus materials")
         list_focus_materials = []
         for asin in tqdm(focus_descriptions):
-            description = focus_descriptions[asin]
+            descriptions = focus_descriptions[asin]
             
             if len(descriptions) <= 1:
                 print(f"NULL description at focus asin {asin}")
