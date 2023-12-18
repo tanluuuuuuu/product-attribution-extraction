@@ -29,7 +29,7 @@ class NER():
         self.ps = PorterStemmer()
         self.nlp = spacy.load('en_core_web_sm')
 
-    def predict(self, description, text_preprocessed=False, map_level=1):
+    def predict(self, description, text_preprocessed=False, map_level=3):
         high_score_ans = defaultdict(set)
         bullet_points = description.split("\n")
         for bullet_point in bullet_points:

@@ -1,3 +1,14 @@
+# Usage
+1. Install libraries
+```bash
+  conda create -n ner_env python=3.8.10 
+  conda activate ner_env
+  pip install -r requirement.txt
+```
+2. Download model
+3. Import NER class
+4. Predict
+
 # Installation
 Python version: 3.8.10
 
