@@ -41,7 +41,7 @@ class NER():
                 for res in results:
                     group = res['entity_group']
                     if res['score'] >= 0.9:
-                        word = res['word'].strip().lower()
+                        word = [res['word'].strip().lower()]
                         if group == 'MAT':
                             word = self.find_nearest_mat(word)
                             mapped_word = self.map_word(word, map_level)
@@ -55,15 +55,16 @@ class NER():
         return new_high_score_ans
 
     def find_nearest_mat(self, word):
-        nearest_lv1 = process.extractOne(word, self.mat_mapping.keys())
+        sgl_word = word[0]
+        nearest_lv1 = process.extractOne(sgl_word, self.mat_mapping.keys())
         if nearest_lv1[1] >= 85:
             return nearest_lv1[0]
         else:
-            nearest_lv2 = process.extractOne(word, self.mat_mapping_lv1.keys())
+            nearest_lv2 = process.extractOne(sgl_word, self.mat_mapping_lv1.keys())
             if nearest_lv2[1] >= 85:
                 return nearest_lv2[0]
             else:
-                return word
+                return sgl_word
 
     def load_mat_mapping(self, file_mapping):
         file_excel = pd.read_excel(file_mapping)
@@ -150,14 +151,14 @@ class NER():
         return list_new_words
 
     def split_by_materials(
-            self, 
-            product_descriptions: dict, 
-            output_dir: str,
-            image_folder_path: str
-        ) -> None:
+        self,
+        product_descriptions: dict,
+        output_dir: str,
+        image_folder_path: str
+    ) -> None:
         """
         Split products into difference materials
-        
+
         Parameters
         ----------
         product_descriptions: dictionary
@@ -177,15 +178,15 @@ class NER():
         """
         for asin in tqdm(product_descriptions):
             descriptions = product_descriptions[asin]
-                
+
             if len(descriptions) <= 1:
                 print(f"NULL description at asin {asin}")
                 continue
 
-            predictions = self.model.predict(descriptions, 
-                                             text_preprocessed=False, 
+            predictions = self.model.predict(descriptions,
+                                             text_preprocessed=False,
                                              map_level=3)
-            
+
             try:
                 folder_name = "_".join(predictions['MAT'])
                 if len(folder_name) == 0:
@@ -194,51 +195,51 @@ class NER():
                     os.makedirs(os.path.join(output_dir, folder_name))
                 folder_output_path = os.path.join(output_dir, folder_name)
                 image_src = os.path.join(image_folder_path, f"{asin}.jpg")
-                image_des = os.path.join(output_dir, folder_name, f"{asin}.jpg")
+                image_des = os.path.join(
+                    output_dir, folder_name, f"{asin}.jpg")
                 shutil.copy(image_src, image_des)
             except:
                 print(f"Fail to save image at asin {asin}")
                 continue
-            
+
         print("***** SPLIT BY MATERIAL DONE!!! *****")
-        
+
     def _get_direct_indirect_by_materials(
-            self, 
-            list_material: list,
-            candidate_descriptions: dict, 
-            output_dir: str,
-            map_level: int,
-        ) -> None:
+        self,
+        list_material: list,
+        candidate_descriptions: dict,
+        output_dir: str,
+        map_level: int,
+    ) -> None:
         list_direct_asin = []
         list_indirect_asin = []
         for asin in tqdm(candidate_descriptions):
             descriptions = candidate_descriptions[asin]
-                
+
             if len(descriptions) <= 1:
                 print(f"NULL description at asin {asin}")
                 continue
 
-            predictions = self.model.predict(descriptions, 
-                                             text_preprocessed=False, 
+            predictions = self.model.predict(descriptions,
+                                             text_preprocessed=False,
                                              map_level=map_level)
-            
+
             mat_prediction = predictions['MAT']
             if len(set(list_material).intersection(set(mat_prediction))) >= 1:
                 list_direct_asin.append(asin)
             else:
                 list_indirect_asin.append(asin)
         return list_direct_asin, list_indirect_asin
-        
+
     def get_direct_indirect(
-            self,
-            focus_descriptions: dict,
-            candidate_descriptions: dict, 
-            map_level: int,
-        ) -> tuple:
-        
+        self,
+        focus_descriptions: dict,
+        candidate_descriptions: dict,
+        map_level: int,
+    ) -> tuple:
         """
         Split products into difference materials
-        
+
         Parameters
         ----------
         focus_descriptions: dictionary
@@ -251,29 +252,29 @@ class NER():
             Dictionary of candidate descriptions, same format as focus_descriptions
         map_level: int,
             Map level, range from 1 to 3
-            
+
         Returns
         -------
         Tuple:
             - List of direct asins
             - List of indirect asins 
         """
-        
+
         print("Get focus materials")
         list_focus_materials = []
         for asin in tqdm(focus_descriptions):
             descriptions = focus_descriptions[asin]
-            
-            if len(descriptions) <= 1:
+
+            if len(str(descriptions)) <= 3:
                 print(f"NULL description at focus asin {asin}")
                 continue
 
-            predictions = self.model.predict(descriptions, 
-                                             text_preprocessed=False, 
-                                             map_level=map_level)
+            predictions = self.predict(descriptions,
+                                       text_preprocessed=False,
+                                       map_level=map_level)
             list_focus_materials.extend(predictions['MAT'])
         list_focus_materials = sorted(list(set(list_focus_materials)))
-        
+
         # Get list direct indirect
         print("Get list direct indirect")
         list_direct, list_indirect = self._get_direct_indirect_by_materials(
