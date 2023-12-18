@@ -148,3 +148,56 @@ class NER():
                 new_word.append(token.lemma_)
             list_new_words.append(" ".join(new_word))
         return list_new_words
+
+    def split_by_materials(
+            self, 
+            product_descriptions: dict, 
+            output_dir: str,
+            image_folder_path: str
+        ) -> None:
+        """
+        Split products into difference materials
+        
+        Parameters
+        ----------
+        product_descriptions: dictionary
+            Dictionary of product descriptions. 
+            Example format: 
+            {
+                'B08SQ66QRL': "Material: iron"    
+            }
+        output_dir: string
+            Path of folder output to save split results.
+        image_folder_path: string
+            Path of image folder to load images to save results.
+
+        Returns
+        -------
+        None 
+        """
+        for asin in tqdm(product_descriptions):
+            descriptions = product_descriptions[asin]
+                
+            if len(descriptions) <= 1:
+                print(f"NULL description at asin {asin}")
+                continue
+
+            predictions = self.model.predict(descriptions, 
+                                             text_preprocessed=False, 
+                                             map_level=3)
+            
+            try:
+                folder_name = "_".join(predictions['MAT'])
+                if len(folder_name) == 0:
+                    folder_name = "no_mat"
+                if not os.path.exists(os.path.join(output_dir, folder_name)):
+                    os.makedirs(os.path.join(output_dir, folder_name))
+                folder_output_path = os.path.join(output_dir, folder_name)
+                image_src = os.path.join(image_folder_path, f"{asin}.jpg")
+                image_des = os.path.join(output_dir, folder_name, f"{asin}.jpg")
+                shutil.copy(image_src, image_des)
+            except:
+                print(f"Fail to save image at asin {asin}")
+                continue
+            
+        print("***** SPLIT BY MATERIAL DONE!!! *****")

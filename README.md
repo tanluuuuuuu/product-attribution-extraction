@@ -5,7 +5,12 @@
   conda activate ner_env
   pip install -r requirement.txt
 ```
-2. Download model
+2. Download model checkpoint 
+```
+V6: https://drive.google.com/drive/folders/1Q9r6WcuLYFgYVPkua-WDcGgahXkXjvb3?usp=drive_link
+V7: https://drive.google.com/drive/folders/1DtmoeOi22NlWPKTjZQ1BTm1MTGH0Dbiv?usp=drive_link
+```
+
 3. Import NER class
 4. Predict
 
