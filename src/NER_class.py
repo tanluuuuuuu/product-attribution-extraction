@@ -209,7 +209,6 @@ class NER():
             output_dir: str,
             map_level: int,
         ) -> None:
-        counter_match = Counter(list_material)
         list_direct_asin = []
         list_indirect_asin = []
         for asin in tqdm(candidate_descriptions):
@@ -224,7 +223,7 @@ class NER():
                                              map_level=map_level)
             
             mat_prediction = predictions['MAT']
-            if Counter(mat_prediction) == counter_match:
+            if len(set(mat_prediction) - set(list_material)) >= 1:
                 list_direct_asin.append(asin)
             else:
                 list_indirect_asin.append(asin)
