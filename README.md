@@ -7,8 +7,7 @@
 ```
 2. Download model checkpoint 
 ```
-V6: https://drive.google.com/drive/folders/1Q9r6WcuLYFgYVPkua-WDcGgahXkXjvb3?usp=drive_link
-V7: https://drive.google.com/drive/folders/1DtmoeOi22NlWPKTjZQ1BTm1MTGH0Dbiv?usp=drive_link
+V8: https://drive.google.com/drive/folders/1SQQToMSG-jUuQbSyMZQ4B3pWklInrmJA?usp=drive_link
 ```
 
 3. Import NER class
