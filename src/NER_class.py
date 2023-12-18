@@ -223,7 +223,7 @@ class NER():
                                              map_level=map_level)
             
             mat_prediction = predictions['MAT']
-            if len(set(mat_prediction) - set(list_material)) >= 1:
+            if len(set(list_material).intersection(set(mat_prediction))) >= 1:
                 list_direct_asin.append(asin)
             else:
                 list_indirect_asin.append(asin)
