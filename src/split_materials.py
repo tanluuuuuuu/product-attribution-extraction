@@ -14,18 +14,16 @@ import shutil
 MODEL_CHECKPOINT = "Model checkpoint path here" # Path to model checkpoint downloaded from Drive. Ex:  model/best_f1
 MAT_MAPPING = "Material mapping path here" # Path to excel file contains material mapping dictionary. Ex: data/mat_mapping.xlsx
 
-PRODUCT_INFO = "Excel path of Product information here" # Path to excel file contains product bulletpoints or description. Ex: data/kettlebell.xlsx
-IMAGE_FOLDER = "Folder path contains images here" # Path to folder contains product images.
-OUTPUT_PATH = "Folder path here"
-
+MAP_LEVEL = 3
 if __name__ == '__main__':
-    assert len(os.listdir(IMAGE_FOLDER)) > 0, "Image folder should not be empty"
-    
     ner_model = NER(model_checkpoint=MODEL_CHECKPOINT,
                     mat_mapping=MAT_MAPPING)
     
-    ner_model.split_by_materials(
-        preprocess_description=dict,
-        output_dir=OUTPUT_PATH,
-        image_folder_path=IMAGE_FOLDER
+    list_direct, list_indirect = ner_model.get_direct_indirect(
+        focus_descriptions=dict,
+        candidate_descriptions=dict,
+        map_level=MAP_LEVEL
     )
+    
+    
+    

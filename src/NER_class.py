@@ -1,5 +1,5 @@
 from transformers import pipeline
-from collections import defaultdict
+from collections import defaultdict, Counter
 import json
 import argparse
 from data_utils import preprocess_description
@@ -51,7 +51,7 @@ class NER():
         new_high_score_ans = defaultdict(list)
         for key_dict in high_score_ans.keys():
             new_high_score_ans[key_dict] = sorted(
-                list(high_score_ans[key_dict]))
+                list(set(high_score_ans[key_dict])))
         return new_high_score_ans
 
     def find_nearest_mat(self, word):
@@ -201,3 +201,86 @@ class NER():
                 continue
             
         print("***** SPLIT BY MATERIAL DONE!!! *****")
+        
+    def _get_direct_indirect_by_materials(
+            self, 
+            list_material: list,
+            candidate_descriptions: dict, 
+            output_dir: str,
+            map_level: int,
+        ) -> None:
+        counter_match = Counter(list_material)
+        list_direct_asin = []
+        list_indirect_asin = []
+        for asin in tqdm(candidate_descriptions):
+            descriptions = candidate_descriptions[asin]
+                
+            if len(descriptions) <= 1:
+                print(f"NULL description at asin {asin}")
+                continue
+
+            predictions = self.model.predict(descriptions, 
+                                             text_preprocessed=False, 
+                                             map_level=map_level)
+            
+            mat_prediction = predictions['MAT']
+            if Counter(mat_prediction) == counter_match:
+                list_direct_asin.append(asin)
+            else:
+                list_indirect_asin.append(asin)
+        return list_direct_asin, list_indirect_asin
+        
+    def get_direct_indirect(
+            self,
+            focus_descriptions: dict,
+            candidate_descriptions: dict, 
+            map_level: int,
+        ) -> tuple:
+        
+        """
+        Split products into difference materials
+        
+        Parameters
+        ----------
+        focus_descriptions: dictionary
+            Dictionary of focus descriptions. 
+            Example format: 
+            {
+                'B08SQ66QRL': "Material: iron"    
+            }
+        candidate_descriptions: dictionary
+            Dictionary of candidate descriptions, same format as focus_descriptions
+        map_level: int,
+            Map level, range from 1 to 3
+            
+        Returns
+        -------
+        Tuple:
+            - List of direct asins
+            - List of indirect asins 
+        """
+        
+        print("Get focus materials")
+        list_focus_materials = []
+        for asin in tqdm(focus_descriptions):
+            description = focus_descriptions[asin]
+            
+            if len(descriptions) <= 1:
+                print(f"NULL description at focus asin {asin}")
+                continue
+
+            predictions = self.model.predict(descriptions, 
+                                             text_preprocessed=False, 
+                                             map_level=map_level)
+            list_focus_materials.extend(predictions['MAT'])
+        list_focus_materials = sorted(list(set(list_focus_materials)))
+        
+        # Get list direct indirect
+        print("Get list direct indirect")
+        list_direct, list_indirect = self._get_direct_indirect_by_materials(
+            list_material=list_focus_materials,
+            candidate_descriptions=candidate_descriptions,
+            output_dir=output_dir,
+            map_level=map_level
+        )
+        return list_direct, list_indirect
