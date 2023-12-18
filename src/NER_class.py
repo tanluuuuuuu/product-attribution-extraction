@@ -40,7 +40,7 @@ class NER():
                 results = self.model(bullet_point)
                 for res in results:
                     group = res['entity_group']
-                    if res['score'] >= 0.9:
+                    if res['score'] >= 0.8:
                         word = [res['word'].strip().lower()]
                         if group == 'MAT':
                             word = self.find_nearest_mat(word)
@@ -265,7 +265,7 @@ class NER():
         for asin in tqdm(focus_descriptions):
             descriptions = focus_descriptions[asin]
 
-            if len(str(descriptions)) <= 3:
+            if not isinstance(descriptions, str):
                 print(f"NULL description at focus asin {asin}")
                 continue
 
