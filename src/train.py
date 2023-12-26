@@ -6,12 +6,11 @@ from torch.optim import AdamW
 from transformers import get_scheduler
 from accelerate import Accelerator
 
-from data_utils import assign_ner_tags_roberta, load_data
+from data_utils import assign_ner_tags_roberta, load_data, load_txt_and_tokenize
 from model_utils import save_model, get_output_dir, setup_model
 from evaluate_model import evaluate_model
 
 if __name__ == '__main__':
-    tokenizer = AutoTokenizer.from_pretrained("roberta-base")
     ner_tags = [
         "MAT",
         "COLOR",
@@ -21,9 +20,11 @@ if __name__ == '__main__':
         processed_ner_tags.extend([f"B-{tag}", f"I-{tag}"])
     ner_tags_2_number = {t: i for (i, t) in enumerate(processed_ner_tags)}
     number_2_ner_tags = {t: i for (t, i) in enumerate(ner_tags_2_number)}
+    
+    tokenizer = AutoTokenizer.from_pretrained("roberta-base", add_prefix_space=True)
 
-    train_dataset = load_data("data/train.xlsx", tokenizer, ner_tags_2_number)
-    test_dataset = load_data("data/test.xlsx", tokenizer, ner_tags_2_number)
+    train_dataset = load_txt_and_tokenize("data/train.txt", tokenizer, ner_tags_2_number)
+    test_dataset = load_txt_and_tokenize("data/test.txt", tokenizer, ner_tags_2_number)
 
     data_collator = DataCollatorForTokenClassification(tokenizer=tokenizer)
     train_dataloader = DataLoader(

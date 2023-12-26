@@ -8,16 +8,16 @@ from transformers.models.roberta.tokenization_roberta_fast import RobertaTokeniz
 import re
 
 def load_data(
-    excel_path: str,
+    txt_path: str,
     tokenizer: RobertaTokenizerFast,
     ner_tags_2_number: Dict
 ) -> Dataset:
     """
-    Load data from excel file for training and/or testing, contains 'sentence', 'locs', 'words'
+    Load data from file
     Parameters
     ----------
     excel_path: string
-        An input of path to excel file
+        An input of path to text file with format CONLL2003
     tokenizer: RobertaTokenizerFast
         An Roberta tokenizer loaded from hugginface hub
     ner_tags_2_number: Dict
@@ -28,8 +28,8 @@ def load_data(
     Dataset
         An Huggingface dataset produced from excel file.
     """
-
-    raw_dataset = pd.read_excel(excel_path)
+    file_data = open(txt_path, 'r')
+    raw_dataset = pd.read_excel(txt_path)
 
     list_input_ids = []
     list_attention_mask = []
@@ -46,6 +46,79 @@ def load_data(
     tokenized_datasets['input_ids'] = pd.Series(list_input_ids)
     tokenized_datasets['attention_mask'] = pd.Series(list_attention_mask)
     tokenized_datasets['labels'] = pd.Series(list_labels)
+
+    dataset = Dataset.from_pandas(tokenized_datasets)
+    return dataset
+
+
+def align_labels_with_tokens(labels, word_ids):
+    new_labels = []
+    current_word = None
+    for word_id in word_ids:
+        if word_id != current_word:
+            # Start of a new word!
+            current_word = word_id
+            label = -100 if word_id is None else labels[word_id]
+            new_labels.append(label)
+        elif word_id is None:
+            # Special token
+            new_labels.append(-100)
+        else:
+            # Same word as previous token
+            label = labels[word_id]
+            # If the label is B-XXX we change it to I-XXX
+            if label % 2 == 1:
+                label += 1
+            new_labels.append(label)
+
+    return new_labels
+
+def load_txt_and_tokenize(
+    txt_path: str,
+    tokenizer: RobertaTokenizerFast,
+    ner_tags_2_number: Dict
+):
+    file_data = open(txt_path, 'r')
+    lines = file_data.readlines()
+    
+    list_tokens = []
+    list_labels = []
+    tokens = []
+    labels = []
+    for line in lines:
+        line = line.strip()
+        if line == '':
+            list_tokens.append(tokens)
+            list_labels.append(labels)
+            tokens = []
+            labels = []
+            continue
+        try:
+            word, label = line.split(" ")
+        except:
+            breakpoint()
+        tokens.append(word)
+        labels.append(ner_tags_2_number[label])
+    
+    list_input_ids = []
+    list_attention_mask = []
+    list_new_labels = []
+    for tokens, labels in zip(list_tokens, list_labels):
+        tokenized_inputs = tokenizer(
+            tokens, truncation=True, is_split_into_words=True
+        )
+        word_ids = tokenized_inputs.word_ids()
+        new_labels = align_labels_with_tokens(labels, word_ids)
+        tokenized_inputs['new_labels'] = new_labels
+        
+        list_input_ids.append(tokenized_inputs['input_ids'])
+        list_attention_mask.append(tokenized_inputs['attention_mask'])
+        list_new_labels.append(tokenized_inputs['new_labels'])
+        
+    tokenized_datasets = pd.DataFrame()
+    tokenized_datasets['input_ids'] = pd.Series(list_input_ids)
+    tokenized_datasets['attention_mask'] = pd.Series(list_attention_mask)
+    tokenized_datasets['labels'] = pd.Series(list_new_labels)
 
     dataset = Dataset.from_pandas(tokenized_datasets)
     return dataset

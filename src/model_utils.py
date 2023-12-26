@@ -8,8 +8,8 @@ from datetime import datetime
 def setup_model(ner_tags_2_number, number_2_ner_tags):
     model = RobertaForTokenClassification.from_pretrained(
         "roberta-base",
-        id2label=ner_tags_2_number,
-        label2id=number_2_ner_tags,
+        id2label=number_2_ner_tags,
+        label2id=ner_tags_2_number,
         ignore_mismatched_sizes=True
     )
     return model
