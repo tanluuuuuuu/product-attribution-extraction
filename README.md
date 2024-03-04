@@ -12,9 +12,9 @@
 ```bash
   pip install -r requirement.txt
 ```
-# Download model
+# Download model folder
 ```
-Newest version: https://bom.so/GJy3Bz
+Newest version: https://s.net.vn/Zmsh
 ```
 
 # Train
