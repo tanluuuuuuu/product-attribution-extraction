@@ -6,9 +6,10 @@ from data_utils import preprocess_description
 import pandas as pd
 import torch
 import re
+import nltk
 from nltk.stem import PorterStemmer
 from collections import defaultdict
-import spacy
+from nltk.stem import WordNetLemmatizer
 from thefuzz import fuzz
 from thefuzz import process
 
@@ -27,7 +28,8 @@ class NER():
         self.mat_mapping = self.load_mat_mapping(mat_mapping)
         self.mat_mapping_lv1 = self.load_mat_lv1(self.mat_mapping)
         self.ps = PorterStemmer()
-        self.nlp = spacy.load('en_core_web_sm')
+        nltk.download('wordnet')
+        self.lemmatizer = WordNetLemmatizer()
 
     def predict(self, description, text_preprocessed=False, map_level=3):
         high_score_ans = defaultdict(set)
@@ -141,13 +143,7 @@ class NER():
         return " ".join(new_words)
 
     def lemmatize_words(self, words):
-        list_new_words = []
-        for word in words:
-            doc = self.nlp(word)
-            new_word = []
-            for token in doc:
-                new_word.append(token.lemma_)
-            list_new_words.append(" ".join(new_word))
+        list_new_words = [self.lemmatizer.lemmatize(word) for word in words]
         return list_new_words
 
     def split_by_materials(

@@ -7,5 +7,6 @@ evaluate==0.4.0
 datasets==2.12.0
 seqeval==1.2.2
 accelerate==0.20.3
-torch==2.0.1
-pytorch-cuda==11.8
+openpyxl
+thefuzz==0.22.1
+nltk==3.8.1
