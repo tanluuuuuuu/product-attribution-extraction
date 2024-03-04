@@ -5,7 +5,7 @@ import argparse
 def argParse():
     parser = argparse.ArgumentParser(description='Attribution extraction')
     parser.add_argument('-m', '--model', type=str, help='Model path')
-    parser.add_argument('-f', '--file_mapping', type=str, help='Excel path to map materials')
+    parser.add_argument('-f', '--file_mapping', type=str, default="./data/mat_mapping.xlsx", help='Excel path to map materials')
     parser.add_argument('-t', '--text', default='This product made from iron',
                         help='Text to inference')
 
