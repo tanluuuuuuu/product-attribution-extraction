@@ -48,6 +48,6 @@ def evaluate_model(
         },
     )
     
-    report = classification_report(y_true, y_pred, labels=[1, 2, 3, 4], target_names=['B-MAT', 'I-MAT', 'B-COLOR', 'B-COLOR'], digits=4)
+    report = classification_report(y_true, y_pred, labels=[1, 2, 3, 4], target_names=['B-MAT', 'I-MAT', 'B-COLOR', 'I-COLOR'], digits=4)
     print(report)
     return results

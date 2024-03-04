@@ -28,11 +28,18 @@ Newest version: https://bom.so/GJy3Bz
 ```
 
 # Model performance on test set
-| class     | precision| recall   |f1     |
-| :-------- | :------- | :------- |:------|
-| MAT       | 0.968    | 0.945    | 0.956 |
-| COLOR     | 0.980    | 0.889    | 0.932 |
+| | precision| recall   |f1     | num samples|
+| :-------- | :------- | :------- |:------|:------|
+| B-MAT | 0.6386    | 0.9298    | 0.7571 | 285 |
+| I-MAT | 0.9627    | 0.8431    | 0.8990 | 153 |
+| B-COLOR | 0.3832 | 0.9535 | 0.5467 | 43 |
+| I-COLOR | 1.0000 | 0.8000 | 0.8889 | 5  |
+| Average | 0.7217 | 0.9033 | 0.7845 | 486 |
+| Overall | 0.9177 | 0.9406 | 0.9290 | 486 |
+
+Accuracy: 0.9973
 
 # Future works
 - Update more material and color vocabularies, contexts in training data
 - Add more attributes for extraction.
+- Intergrate Hero Gang method to huggingface.
