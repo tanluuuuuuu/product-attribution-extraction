@@ -19,7 +19,7 @@ Newest version: https://bom.so/GJy3Bz
 
 # Train
 ```bash
-  python src/train.py
+  bash train.sh
 ```
 
 # Inference
