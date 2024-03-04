@@ -27,7 +27,7 @@ Newest version: https://bom.so/GJy3Bz
   python src/inference.py -m [Model path] -f [Excel path] -t [Text]
 ```
 
-# Performance on test set
+# Model performance on test set
 | class     | precision| recall   |f1     |
 | :-------- | :------- | :------- |:------|
 | MAT       | 0.968    | 0.945    | 0.956 |

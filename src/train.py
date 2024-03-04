@@ -21,7 +21,9 @@ if __name__ == '__main__':
     ner_tags_2_number = {t: i for (i, t) in enumerate(processed_ner_tags)}
     number_2_ner_tags = {t: i for (t, i) in enumerate(ner_tags_2_number)}
     
-    tokenizer = AutoTokenizer.from_pretrained("roberta-base", add_prefix_space=True)
+    checkpoint = "roberta-base"
+    
+    tokenizer = AutoTokenizer.from_pretrained(checkpoint, add_prefix_space=True)
 
     train_dataset = load_txt_and_tokenize("data/train.txt", tokenizer, ner_tags_2_number)
     test_dataset = load_txt_and_tokenize("data/test.txt", tokenizer, ner_tags_2_number)
@@ -37,7 +39,7 @@ if __name__ == '__main__':
         test_dataset, collate_fn=data_collator, batch_size=4
     )
 
-    model = setup_model(ner_tags_2_number, number_2_ner_tags)
+    model = setup_model(ner_tags_2_number, number_2_ner_tags, checkpoint)
     metric = evaluate.load("seqeval")
     optimizer = AdamW(model.parameters(), lr=2e-5)
     num_train_epochs = 30

@@ -5,12 +5,13 @@ from accelerate import Accelerator
 import os
 from datetime import datetime
 
-def setup_model(ner_tags_2_number, number_2_ner_tags):
+def setup_model(ner_tags_2_number, number_2_ner_tags, checkpoint=""):
+    checkpoint = "roberta-base" if len(checkpoint) == 0 else checkpoint
     model = RobertaForTokenClassification.from_pretrained(
-        "roberta-base",
+        checkpoint,
         id2label=number_2_ner_tags,
         label2id=ner_tags_2_number,
-        ignore_mismatched_sizes=True
+        ignore_mismatched_sizes=True,
     )
     return model
     
