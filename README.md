@@ -24,7 +24,7 @@ Newest version: https://bom.so/GJy3Bz
 
 # Inference
 ```bash
-  python src/inference.py -m [Link model] -t [Text]
+  python src/inference.py -m [Model path] -f [Excel path] -t [Text]
 ```
 
 # Performance on test set
