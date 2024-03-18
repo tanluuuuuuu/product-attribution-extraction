@@ -24,7 +24,7 @@ Newest version: https://s.net.vn/Zmsh
 
 # Inference
 ```bash
-  python src/inference.py -m [Model path] -f [Excel path] -t [Text]
+  python src/inference.py -m [Model path] -t [Text]
 ```
 
 # Model performance on test set
